@@ -9,6 +9,22 @@ The ANITA is a tool written in Python that can be used in *desktop*, or in a [we
   - LaTeX, to generate the LaTeX code of the trees from a valid proof. Use the `qtree` package in your LaTeX code; 
   - LaTeX in Overleaf, to open the proof source code directly in [Overleaf](http://overleaf.com/) that is a collaborative platform for editing LaTeX
 
+To facilitate the writing of the proofs, we made the following conventions in ANITA:
+- The Atoms are written in capital letters (e.g. `A, B,  H(x)`);
+- Variables are written with the first letter in lowercase, followed by letters and numbers (e.g. `x, x0, xP0`);
+- Formulas with $\forall x$ and $\exists x$ are represented by $Ax$ and $Ex$ ('A' and 'E' followed by the variable x). For instance, `Ax(H(x)->M(x))` represents $\forall x~(H(x)\rightarrow M(x))$.
+- Table below shows the equivalence of logic symbols and those used in ANITA.
+- The order of precedence of quantifiers and logical connectives is defined by $\lnot,\forall,\exists,\wedge,\vee,\rightarrow$ with right alignment. For example:
+  - Formula `~A&B -> C` represents formula $(((\lnot A)\land B)\rightarrow C)$;
+  - The theorem `~A|B |- A->C` represents $((\lnot A)\vee B)\vdash (A\rightarrow B)$.
+- Each inference rule will be named by its respective connective and the truth value of the signed formula. For example, `&T` represents the conjunction rule when the formula is true. Optionally, the rule name can be omitted.
+- The justifications for the premises and the conclusion use the reserved words `pre` and `conclusion`, respectively.
+
+| Symbol |  $\lnot$ | $\land$ | $\lor$ | $\rightarrow$ | $\forall x$ | $\exists x$ | $\bot$ | branch | $\vdash$ |
+| :---:  |  :---:  | :---: | :---:  | :---:  | :---:  | :---:  | :---:  | :---:  | :---: |
+| LaTeX  |  $\backslash\textrm{lnot}$ | $\backslash\textrm{land}$ | $\backslash\textrm{lor}$ | $\backslash\textrm{rightarrow}$ | $\backslash\textrm{forall x}$ | $\backslash\textrm{exists x}$ | $\backslash\textrm{bot}$ | $[.~]$ | $\backslash\textrm{vdash}$ |
+| ANITA |  ~  | \& | $\mid$ | -> | Ax | Ex | @  | { } | \|- |
+
 ![](ANITA-EXAMPLE.png)
 
 ## License
