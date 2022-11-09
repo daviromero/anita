@@ -1,0 +1,5 @@
+The proof below is valid.
+A|B, A->C, B->C |- C
+;\Tree [.{$T~A\lor B$ \\ $T~A\rightarrow C$ \\ $T~B\rightarrow C$ \\ $F~C$} [.{$T~A$} [.{$F~A$} [.{$\times$} ] ] [.{$T~C$} [.{$\times$} ] ] ] [.{$T~B$} [.{$F~B$} [.{$\times$} ] ] [.{$T~C$} [.{$\times$} ] ] ] ];The proof of theorem $A\lor B, A\rightarrow C, B\rightarrow C \vdash C$ is valid.
+
+\Tree [.{$T~A\lor B$ \\ $T~A\rightarrow C$ \\ $T~B\rightarrow C$ \\ \color{blue}{$F~C$}} [.{\color{blue}{$T~A$}} [.{\color{blue}{$F~A$}} [.{$\times$} ] ] [.{\color{blue}{$T~C$}} [.{$\times$} ] ] ] [.{\color{blue}{$T~B$}} [.{\color{blue}{$F~B$}} [.{$\times$} ] ] [.{\color{blue}{$T~C$}} [.{$\times$} ] ] ] ]
