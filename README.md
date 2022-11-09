@@ -9,9 +9,10 @@ The ANITA is a tool written in Python that can be used in *desktop*, or in a [we
   - LaTeX, to generate the LaTeX code of the trees from a valid proof. Use the `qtree` package in your LaTeX code; 
   - LaTeX in Overleaf, to open the proof source code directly in [Overleaf](http://overleaf.com/) that is a collaborative platform for editing LaTeX
 
-## License
+ANITA is avalible by a [**MIT License**](license.txt).
 
-[**MIT**](license.txt).
+## Requirements:
+- You must install the [rply 0.7.8 package](https://pypi.org/project/rply/)
 
 ## ANITA
 You can run ANITA with the command line: 
