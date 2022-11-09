@@ -6,5 +6,21 @@ The ANITA is a tool written in Python that can be used in *desktop*, or in a [we
 - And the following links: 
   - Check, to check the correctness of the proof; 
   - Manual, to view a document with the inference rules and examples; 
-  - LaTeX, to generate the LaTeX code of the trees from a valid proofUse the `qtree` package in your LaTeX code; 
+  - LaTeX, to generate the LaTeX code of the trees from a valid proof. Use the `qtree` package in your LaTeX code; 
   - LaTeX in Overleaf, to open the proof source code directly in [Overleaf](http://overleaf.com/) that is a collaborative platform for editing LaTeX
+
+## License
+
+[**MIT**](LICENSE).
+
+## ANITA
+You can run ANITA with the command line: 
+```bash
+python anita_en.py [-i input file] [-output file]
+```
+## ANITA in Voila
+You can run ANITA in Jupyter Nootebook or in a [Voilà](https://voila.readthedocs.io/) 
+```bash
+voila anita_en.ipynb
+```
+
