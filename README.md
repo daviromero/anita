@@ -11,7 +11,7 @@ The ANITA is a tool written in Python that can be used in *desktop*, or in a [we
 
 ## License
 
-[**MIT**](LICENSE).
+[**MIT**](license.txt).
 
 ## ANITA
 You can run ANITA with the command line: 
