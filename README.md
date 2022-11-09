@@ -44,3 +44,14 @@ You can run ANITA in Jupyter Nootebook or in a [Voilà](https://voila.readthedoc
 voila anita_en.ipynb
 ```
 
+## A Portuguese Version
+We have a portuguese version:
+- Run ANITA with
+```bash
+python anita_pt.py [-i input file] [-output file]
+```
+- Voilà with
+```bash
+voila anita_pt.ipynb
+```
+- In ANITA syntax, use `conclusao`instead of `conclusion`.
