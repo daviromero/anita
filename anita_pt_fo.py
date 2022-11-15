@@ -2457,6 +2457,58 @@ class ParserAnita():
         return ", ".join(f.toLatex(parentheses=parentheses) for f in premisses) +' \\vdash '+conclusion.toLatex(parentheses=parentheses)
 
 
+def check_proof(input_proof, latex=True):
+  try:
+      result = ParserAnita.getProof(input_proof)
+      r = ''
+      if(result.errors==[]):
+        if(result.is_closed):
+            r += "A demonstração abaixo está correta.\n"
+            r += result.theorem
+            if latex: 
+              r += "\nLatex:\n"+str(result.latex)
+              r += "\nLatex com cor:\n"+str(result.colored_latex)
+        else:
+            if result.saturared_branches != []:
+              r += "O Teorema abaixo não é válido.\n"
+              r += result.theorem 
+              r += "\nSão contra-exemplos:"
+              for s_v in result.counter_examples:
+                  r += '\n  '+s_v
+              r += "\n"+str(result.latex)
+              if latex: 
+                r += "\nLatex:\nO Teorema ${}$ não é válido.\n".format(result.latex_theorem)
+                r += "\nSão contra-exemplos:"
+                r += "\n\\begin{itemize}"
+                for s_v in result.counter_examples:
+                    r += '\n  \item $'+s_v+'$'
+                r += "\n\end{itemize}"
+                r += "\n"+str(result.colored_latex)
+            else: 
+                r += "\nA demonstração do teorema abaixo não está completa.\n"
+                r += result.theorem
+                r += "\nOs ramos abaixo não estão saturados:"
+                for rules in result.open_branches:
+                  r += "\nRamo:\n"
+                  r += '\n  '.join([r.toString() for r in reversed(rules)])
+                if latex: 
+                  r += "\nLatex:\n"+str(result.latex)
+                  r += "\nLatex com cor:\n"+str(result.colored_latex)
+      else:
+        r += "Os seguintes erros foram encontrados:\n\n"
+        for error in result.errors:
+          r += str(error)
+      return r
+  except ValueError:
+      s = traceback.format_exc()
+      result = (s.split("@@"))[-1]
+      r += "Os seguintes erros foram encontrados:\n\n"
+      r += result
+      return r
+  else:
+    pass
+
+    
 # PARSER DE UM TEOREMA
 
 class ParserTheorem():
