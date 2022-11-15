@@ -2439,6 +2439,56 @@ class ParserAnita():
       else:
         return ", ".join(f.toLatex(parentheses=parentheses) for f in premisses) +' \\vdash '+conclusion.toLatex(parentheses=parentheses)
 
+def check_proof(input_proof, latex=True):
+  try:
+      result = ParserAnita.getProof(input_proof)
+      r = ''
+      if(result.errors==[]):
+        if(result.is_closed):
+            r += "The proof below is valid.\n"
+            r += result.theorem
+            if latex: 
+              r += "\nLatex:\n"+str(result.latex)
+              r += "\nColored Latex:\n"+str(result.colored_latex)
+        else:
+            if result.saturared_branches != []:
+              r += "The theorem is not valid.\n"
+              r += result.theorem 
+              r += "\nCountermodels:"
+              for s_v in result.counter_examples:
+                  r += '\n  '+s_v
+              r += "\n"+str(result.latex)
+              if latex: 
+                r += "\nLatex:\nTheorem ${}$ is not valid.\n".format(result.latex_theorem)
+                r += "\nCountermodels:"
+                r += "\n\\begin{itemize}"
+                for s_v in result.counter_examples:
+                    r += '\n  \item $'+s_v+'$'
+                r += "\n\end{itemize}"
+                r += "\n"+str(result.colored_latex)
+            else: 
+                r += "\nThe proof below is not complete.\n"
+                r += result.theorem
+                r += "\nThe branches below are not saturated:"
+                for rules in result.open_branches:
+                  r += "\nBranch:\n  "
+                  r += '\n  '.join([r.toString() for r in reversed(rules)])
+                if latex: 
+                  r += "\nLatex:\n"+str(result.latex)
+                  r += "\nColored Latex:\n"+str(result.colored_latex)
+      else:
+        r += "The following errors were found:\n\n"
+        for error in result.errors:
+          r += str(error)
+      return r
+  except ValueError:
+      s = traceback.format_exc()
+      result = (s.split("@@"))[-1]
+      r += "The following errors were found:\n\n"
+      r += result
+      return r
+  else:
+    pass
 
 
 # Parser of Theorem
