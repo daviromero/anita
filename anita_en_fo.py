@@ -2484,7 +2484,7 @@ def check_proof(input_proof, latex=True):
   except ValueError:
       s = traceback.format_exc()
       result = (s.split("@@"))[-1]
-      r += "The following errors were found:\n\n"
+      r = "The following errors were found:\n\n"
       r += result
       return r
   else:
