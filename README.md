@@ -68,7 +68,8 @@ print(check_proof('''1. T A|B		pre
 14.		@	    13,4
 	}
    }
-'''))```
+'''))
+```
 
 ## A Portuguese Version
 We have a portuguese version:
@@ -82,3 +83,29 @@ voila anita_pt.ipynb
 ```
 - In ANITA syntax, use `conclusao`instead of `conclusion`.
 
+- You can import ANITA in your code (basic usage)
+```bash
+from anita_pt_fo import check_proof
+
+print(check_proof('''1. T A|B		pre
+2. T A->C		pre
+3. T B->C		pre
+4. F C			conclusao
+5. {	T A		1
+6.	{	F A	    2
+7.		@	    5,6
+	}
+8.	{	T C	    2
+9.		@	    8,4
+	}
+   }
+10.{	T B		1
+11.	{	F B	    3
+12.		@	    10,11
+	}
+13.	{	T C 	3
+14.		@	    13,4
+	}
+   }
+'''))
+```
