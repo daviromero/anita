@@ -1,7 +1,7 @@
 import ipywidgets as widgets
 from IPython.display import display, Markdown
 import traceback
-import anita_en_fo
+from anita_pt_fo import ParserAnita, ParserTheorem, ParserFormula
 
 def anita(input_string='', height_layout='300px'):
   layout = widgets.Layout(width='90%', height=height_layout)
@@ -23,7 +23,7 @@ def anita(input_string='', height_layout='300px'):
     output.clear_output()
     with output:
       try:
-          result = anita_en_fo.ParserAnita.getProof(input.value)
+          result = ParserAnita.getProof(input.value)
           if(result.errors==[]):
             msg = []
             if(result.is_closed):
@@ -60,14 +60,14 @@ def anita(input_string='', height_layout='300px'):
 
 def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_gentzen=False, default_fitch=False):
   layout = widgets.Layout(width='90%', height=height_layout)
-  run = widgets.Button(description="Verificar")
+  run = widgets.Button(description="Check")
   input = widgets.Textarea(
       value=input_proof,
       placeholder='Digite sua demonstração:',
       description='',
       layout=layout
       )
-  premisses, conclusion = anita_en_fo.ParserTheorem.getTheorem(input_theorem)
+  premisses, conclusion = ParserTheorem.getTheorem(input_theorem)
   if conclusion == None:
     display(Markdown(rf'**<font color="red">{input_theorem} não é um teorema válido!</font>**'))
     return
@@ -82,7 +82,7 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
     output.clear_output()
     with output:
       try:
-          result = anita_en_fo.ParserAnita.getProof(input.value)
+          result = ParserAnita.getProof(input.value)
           if(result.errors==[]):
               set_premisses = set([p.toString() for p in premisses])
               set_premisses_result = set([p.toString() for p in result.premisses])
@@ -127,4 +127,201 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
 from random import randrange
 
 lTheorems = [' |- (A|(A&B))->A', ' |- (A&(A|B))->A', ' |- (A->(B->C))->(B->(A->C))', ' |- (A->(A->B))->(A->B)', ' |- (~A->B)->((~A->~B)->A)', ' |- A|~A', ' |- (A->B)|(B->A)', ' |- A->A', ' |- (A->B)->((C->A)->(C->A))', 'A&B->C |- B->(A->C)', 'B->(A->C) |- A&B->C', ' |- (A->(B->C))->((A->B)->(A->C))', ' |- A->(B->A)', ' |- ((A->B)->A)->A', 'A->C, A|B, B->C |- C', 'A |- ~~A', '~~A |- A', 'A->B, ~B |- ~A', '~B->~A |- A->B', 'A->B |- ~B->~A', '~(A|B) |- ~A&~B', '~A&~B |- ~(A|B)', '~(A&B) |- ~A|~B', '~A|~B |- ~(A&B)', 'A|(B&C) |- (A|B)&(A|C)', '(A|B)&(A|C) |- A|(B&C)', 'A&(B|C) |- (A&B)|(A&C)', '(A&B)|(A&C) |- A&(B|C)', 'A|B, ~B |- A', 'A|B |- ~A->B', '~A->B |- A|B', 'A&B |- ~(A->~B)', '~(A->~B) |- A&B', 'A|B |- ~(~A&~B)', '~(~A&~B) |- A|B', 'A->B |- ~(A&~B)', '~(A&~B) |- A->B', 'A&B |- ~(~A|~B)', '~(~A|~B) |- A&B', 'A->B |- ~A|B', '~A|B |- A->B', ' |- Ax P(x)->~Ex ~P(x)', ' |- ~Ex ~P(x)->Ax P(x)', ' |- ~Ex ~P(x)->Ax P(x)', ' |- Ex P(x)->~Ax ~P(x)', ' |- Ax (P(x)&Q(x))->(Ax P(x)&Ax Q(x))', ' |- Ax Ay P(x,y)->Ay Ax P(x,y)', ' |- Ax (P->Q(x))->(P->Ax Q(x))', ' |- Ex (P(x)|Q(x))->(Ex P(x)|Ex Q(x))', ' |- ~Ax P(x)->Ex ~P(x)', ' |- Ex ~P(x)->~Ax P(x)', ' |- ~Ex P(x)->Ax ~P(x)', ' |- Ax ~P(x)->~Ex P(x)', ' |- Ex (P(x)&Q)->(Ex P(x)&Q)', ' |- (Ex P(x)&Q)->Ex (P(x)&Q)', ' |- Ax (P(x)|Q)->(Ax P(x)|Q)', ' |- (Ax P(x)|Q)->Ax (P(x)|Q)', ' |- Ex (P(x)->Q)->(Ax P(x)->Q)', ' |- (Ax P(x)->Q)->Ex (P(x)->Q)', ' |- Ex (P->Q(x))->(P->Ex Q(x))', ' |- (P->Ex Q(x))->Ex (P->Q(x))', ' |- Ex (P(x)->Ax P(x))']
+
+
+
+def is_substitutable(input_formula='', input_var ='x', input_term='a'):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Check")
+  cResult = widgets.RadioButtons(
+    options=['Yes', 'No'],
+    value=None, 
+    description='Answer:',
+    disabled=False
+)
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**The variable {input_var} is substitutable by the term {input_term} in the formula {input_formula}:**'))
+  display(cResult, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          f = ParserFormula.getFormula(input_formula)
+          if(f!=None):
+            if (f.is_substitutable(input_var,input_term) and cResult.value=='Yes'):
+              display(Markdown(r'**<font color="blue">Congratulations you got the question right!</font>**'))              
+              display(Markdown(rf'The variable {input_var} **is substitutable** by the term {input_term} in the formula {input_formula}.'))              
+            elif not f.is_substitutable(input_var,input_term) and cResult.value=='No':
+              display(Markdown(r'**<font color="blue">Congratulations you got the question right!</font>**'))              
+              display(Markdown(rf'The variable {input_var} **is not substitutable** by the term {input_term} in the formula {input_formula}.')) 
+            else:
+              display(Markdown(rf'**<font color="red">Unfortunately, you got the question wrong.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">Formula definition is not correct, check if all rules are applied correctly. Remember that a formula is defined by the following BNF: F :== P | ~ P | Q & Q | P | Q | P -> Q | P <-> Q | (P), where P,Q (in capital letters) are atoms.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+def verify_variables(input_string='', input_formula = ''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Check")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Enter the variables separated by ; (semicolon)',
+      description='',
+      layout=layout
+      )
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**Enter the set of variables of the formula {input_formula}:**'))
+  display(Markdown(r'Each element of your set must be separated by ; (semicolon)'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input_formula)
+          variables = set([x.strip() for x in input.value.strip().split(";")])
+          if(result!=None):
+            if variables==result.all_variables():
+              display(Markdown(r'**<font color="blue">Congratulations, you got the question right!</font>**'))              
+            else:
+              display(Markdown(rf'**<font color="red">Unfortunately, you got the question wrong.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">Formula definition is not correct, check if all rules are applied correctly. Remember that a formula is defined by the following BNF: F :== P | ~ P | Q & Q | P | Q | P -> Q | P <-> Q | (P), where P,Q (in capital letters) are atoms.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+
+def verify_free_variables(input_string='', input_formula = ''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Check")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Enter the variables separated by ; (semicolon)',
+      description='',
+      layout=layout
+      )
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**Enter the set of the free variables of the formula {input_formula}:**'))
+  display(Markdown(r'Each element of your set must be separated by ; (semicolon)'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input_formula)
+          variables = set([x.strip() for x in input.value.strip().split(";")])
+          if(result!=None):
+            if variables==result.free_variables():
+              display(Markdown(r'**<font color="blue">Congratulations, you got the question right!</font>**'))              
+            else:
+              display(Markdown(rf'**<font color="red">Unfortunately, you got the question wrong.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">Formula definition is not correct, check if all rules are applied correctly. Remember that a formula is defined by the following BNF: F :== P | ~ P | Q & Q | P | Q | P -> Q | P <-> Q | (P), where P,Q (in capital letters) are atoms.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+def verify_bound_variables(input_string='', input_formula = ''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Check")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Enter the variables separated by ; (semicolon)',
+      description='',
+      layout=layout
+      )
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**Enter the set of bound variables of the formula {input_formula}:**'))
+  display(Markdown(r'Each element of your set must be separated by ; (semicolon)'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input_formula)
+          variables = set([x.strip() for x in input.value.strip().split(";")])
+          if(result!=None):
+            if variables==result.bound_variables():
+              display(Markdown(r'**<font color="blue">Congratulations, you got the question right!</font>**'))              
+            else:
+              display(Markdown(rf'**<font color="red">Unfortunately, you got the question wrong.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">Formula definition is not correct, check if all rules are applied correctly. Remember that a formula is defined by the following BNF: F :== P | ~ P | Q & Q | P | Q | P -> Q | P <-> Q | (P), where P,Q (in capital letters) are atoms.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+def verify_substitution(input_string='', input_formula = '', input_var ='x', input_term='a'):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Check")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Enter your formula:',
+      description='',
+      layout=layout
+      )
+  cParentheses = widgets.Checkbox(value=False, description='Display Formula with Parentheses')
+  cLatex = widgets.Checkbox(value=False, description='Display Formula in Latex')
+  output = widgets.Output()
+  wButtons = widgets.HBox([run, cParentheses, cLatex])
+  
+  display(Markdown(rf'**Enter the formula that results from substitution the variable {input_var} with the term {input_term} in the formula {input_formula}:**'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          f = ParserFormula.getFormula(input_formula)
+          result = ParserFormula.getFormula(input.value)
+          if(result!=None):
+            if result==f.substitution(input_var,input_term):
+              display(Markdown(r'**<font color="blue">Congratulations this is the correct substitution:</font>**'))              
+              if(cLatex.value):
+                s = result.toLatex(parentheses=cParentheses.value)
+                display(Markdown(rf'${s}$'))
+              else:
+                display(Markdown(rf'{result.toString(parentheses=cParentheses.value)}'))
+            else:
+              display(Markdown(rf'**<font color="red">The formula {result.toString()} is not the result of substitution {input_var} with {input_term} in the formula {input_formula}.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">Formula definition is not correct, check if all rules are applied correctly. Remember that a formula is defined by the following BNF: F :== P | ~ P | Q & Q | P | Q | P -> Q | P <-> Q | (P), where P,Q (in capital letters) are atoms.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
 

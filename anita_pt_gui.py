@@ -1,7 +1,7 @@
 import ipywidgets as widgets
 from IPython.display import display, Markdown
 import traceback
-import anita_pt_fo
+from anita_pt_fo import ParserAnita, ParserTheorem, ParserFormula
 
 def anita(input_string='', height_layout='300px'):
   layout = widgets.Layout(width='90%', height=height_layout)
@@ -23,7 +23,7 @@ def anita(input_string='', height_layout='300px'):
     output.clear_output()
     with output:
       try:
-          result = anita_pt_fo.ParserAnita.getProof(input.value)
+          result = ParserAnita.getProof(input.value)
           if(result.errors==[]):
             msg = []
             if(result.is_closed):
@@ -67,7 +67,7 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
       description='',
       layout=layout
       )
-  premisses, conclusion = anita_pt_fo.ParserTheorem.getTheorem(input_theorem)
+  premisses, conclusion = ParserTheorem.getTheorem(input_theorem)
   if conclusion == None:
     display(Markdown(rf'**<font color="red">{input_theorem} não é um teorema válido!</font>**'))
     return
@@ -82,7 +82,7 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
     output.clear_output()
     with output:
       try:
-          result = anita_pt_fo.ParserAnita.getProof(input.value)
+          result = ParserAnita.getProof(input.value)
           if(result.errors==[]):
               set_premisses = set([p.toString() for p in premisses])
               set_premisses_result = set([p.toString() for p in result.premisses])
@@ -127,4 +127,202 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
 from random import randrange
 
 lTheorems = [' |- (A|(A&B))->A', ' |- (A&(A|B))->A', ' |- (A->(B->C))->(B->(A->C))', ' |- (A->(A->B))->(A->B)', ' |- (~A->B)->((~A->~B)->A)', ' |- A|~A', ' |- (A->B)|(B->A)', ' |- A->A', ' |- (A->B)->((C->A)->(C->A))', 'A&B->C |- B->(A->C)', 'B->(A->C) |- A&B->C', ' |- (A->(B->C))->((A->B)->(A->C))', ' |- A->(B->A)', ' |- ((A->B)->A)->A', 'A->C, A|B, B->C |- C', 'A |- ~~A', '~~A |- A', 'A->B, ~B |- ~A', '~B->~A |- A->B', 'A->B |- ~B->~A', '~(A|B) |- ~A&~B', '~A&~B |- ~(A|B)', '~(A&B) |- ~A|~B', '~A|~B |- ~(A&B)', 'A|(B&C) |- (A|B)&(A|C)', '(A|B)&(A|C) |- A|(B&C)', 'A&(B|C) |- (A&B)|(A&C)', '(A&B)|(A&C) |- A&(B|C)', 'A|B, ~B |- A', 'A|B |- ~A->B', '~A->B |- A|B', 'A&B |- ~(A->~B)', '~(A->~B) |- A&B', 'A|B |- ~(~A&~B)', '~(~A&~B) |- A|B', 'A->B |- ~(A&~B)', '~(A&~B) |- A->B', 'A&B |- ~(~A|~B)', '~(~A|~B) |- A&B', 'A->B |- ~A|B', '~A|B |- A->B', ' |- Ax P(x)->~Ex ~P(x)', ' |- ~Ex ~P(x)->Ax P(x)', ' |- ~Ex ~P(x)->Ax P(x)', ' |- Ex P(x)->~Ax ~P(x)', ' |- Ax (P(x)&Q(x))->(Ax P(x)&Ax Q(x))', ' |- Ax Ay P(x,y)->Ay Ax P(x,y)', ' |- Ax (P->Q(x))->(P->Ax Q(x))', ' |- Ex (P(x)|Q(x))->(Ex P(x)|Ex Q(x))', ' |- ~Ax P(x)->Ex ~P(x)', ' |- Ex ~P(x)->~Ax P(x)', ' |- ~Ex P(x)->Ax ~P(x)', ' |- Ax ~P(x)->~Ex P(x)', ' |- Ex (P(x)&Q)->(Ex P(x)&Q)', ' |- (Ex P(x)&Q)->Ex (P(x)&Q)', ' |- Ax (P(x)|Q)->(Ax P(x)|Q)', ' |- (Ax P(x)|Q)->Ax (P(x)|Q)', ' |- Ex (P(x)->Q)->(Ax P(x)->Q)', ' |- (Ax P(x)->Q)->Ex (P(x)->Q)', ' |- Ex (P->Q(x))->(P->Ex Q(x))', ' |- (P->Ex Q(x))->Ex (P->Q(x))', ' |- Ex (P(x)->Ax P(x))']
+
+
+
+
+def is_substitutable(input_formula='', input_var ='x', input_term='a'):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Verificar")
+  cResult = widgets.RadioButtons(
+    options=['Sim', 'Não'],
+    value=None, 
+    description='Resposta:',
+    disabled=False
+)
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**A variável {input_var} é substituível pelo termo {input_term} na fórmula {input_formula}:**'))
+  display(cResult, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          f = ParserFormula.getFormula(input_formula)
+          if(f!=None):
+            if (f.is_substitutable(input_var,input_term) and cResult.value=='Sim'):
+              display(Markdown(r'**<font color="blue">Parabéns você acertou a questão!</font>**'))              
+              display(Markdown(rf'A variável {input_var} **é substituível** pelo termo {input_term} na fórmula {input_formula}.'))              
+            elif not f.is_substitutable(input_var,input_term) and cResult.value=='Não':
+              display(Markdown(r'**<font color="blue">Parabéns você acertou a questão!</font>**'))              
+              display(Markdown(rf'A variável {input_var} **não é substituível** pelo termo {input_term} na fórmula {input_formula}.')) 
+            else:
+              display(Markdown(rf'**<font color="red">Infelizmente, você errou a questão.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">A definição da fórmula não está correta, verifique se todas regras foram aplicadas corretamente. Lembre-se que uma fórmula é definida pela seguinte BNF: F :== P | ~ P | P & Q | P | Q | P -> Q | P <-> Q | (P), onde P,Q (em caixa alta) são átomos.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+def verify_variables(input_string='', input_formula = ''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Verificar")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Digite as variáveis separadas por ;',
+      description='',
+      layout=layout
+      )
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**Digite o conjunto de variávels da fórmula {input_formula}:**'))
+  display(Markdown(r'Cada elemento do seu conjunto deve ser separado por ; (ponto-e-vírgula)'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input_formula)
+          variables = set([x.strip() for x in input.value.strip().split(";")])
+          if(result!=None):
+            if variables==result.all_variables():
+              display(Markdown(r'**<font color="blue">Parabéns você acertou a questão.</font>**'))              
+            else:
+              display(Markdown(rf'**<font color="red">Você errou a questão.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">A definição da fórmula não está correta, verifique se todas regras foram aplicadas corretamente. Lembre-se que uma fórmula é definida pela seguinte BNF: F :== P | ~ P | P & Q | P | Q | P -> Q | P <-> Q | (P), onde P,Q (em caixa alta) são átomos.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+
+def verify_free_variables(input_string='', input_formula = ''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Verificar")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Digite as variáveis separadas por ;',
+      description='',
+      layout=layout
+      )
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**Digite o conjunto de variávels livres da fórmula {input_formula}:**'))
+  display(Markdown(r'Cada elemento do seu conjunto deve ser separado por ; (ponto-e-vírgula)'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input_formula)
+          variables = set([x.strip() for x in input.value.strip().split(";")])
+          if(result!=None):
+            if variables==result.free_variables():
+              display(Markdown(r'**<font color="blue">Parabéns você acertou a questão.</font>**'))              
+            else:
+              display(Markdown(rf'**<font color="red">Você errou a questão.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">A definição da fórmula não está correta, verifique se todas regras foram aplicadas corretamente. Lembre-se que uma fórmula é definida pela seguinte BNF: F :== P | ~ P | P & Q | P | Q | P -> Q | P <-> Q | (P), onde P,Q (em caixa alta) são átomos.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+def verify_bound_variables(input_string='', input_formula = ''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Verificar")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Digite as variáveis separadas por ;',
+      description='',
+      layout=layout
+      )
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  
+  display(Markdown(rf'**Digite o conjunto de variávels ligadas da fórmula {input_formula}:**'))
+  display(Markdown(r'Cada elemento do seu conjunto deve ser separado por ; (ponto-e-vírgula)'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input_formula)
+          variables = set([x.strip() for x in input.value.strip().split(";")])
+          if(result!=None):
+            if variables==result.bound_variables():
+              display(Markdown(r'**<font color="blue">Parabéns você acertou a questão.</font>**'))              
+            else:
+              display(Markdown(rf'**<font color="red">Você errou a questão.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">A definição da fórmula não está correta, verifique se todas regras foram aplicadas corretamente. Lembre-se que uma fórmula é definida pela seguinte BNF: F :== P | ~ P | P & Q | P | Q | P -> Q | P <-> Q | (P), onde P,Q (em caixa alta) são átomos.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+def verify_substitution(input_string='', input_formula = '', input_var ='x', input_term='a'):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Verificar")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Digite sua fórmula:',
+      description='',
+      layout=layout
+      )
+  cParentheses = widgets.Checkbox(value=False, description='Exibir Fórmula com Parênteses')
+  cLatex = widgets.Checkbox(value=False, description='Exibir Fórmula em Latex')
+  output = widgets.Output()
+  wButtons = widgets.HBox([run, cParentheses, cLatex])
+  
+  display(Markdown(rf'**Digite a fórmula que é resultado da substituição da variável {input_var} pelo termo {input_term} na fórmula {input_formula}:**'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          f = ParserFormula.getFormula(input_formula)
+          result = ParserFormula.getFormula(input.value)
+          if(result!=None):
+            if result==f.substitution(input_var,input_term):
+              display(Markdown(r'**<font color="blue">Parabéns essa é a subtituição correta:</font>**'))              
+              if(cLatex.value):
+                s = result.toLatex(parentheses=cParentheses.value)
+                display(Markdown(rf'${s}$'))
+              else:
+                display(Markdown(rf'{result.toString(parentheses=cParentheses.value)}'))
+            else:
+              display(Markdown(rf'**<font color="red">A fórmula {result.toString()} não é o resultado da substituição de {input_var} por {input_term} na fórmula {input_formula}.</font>**'))
+          else:
+            display(Markdown(r'**<font color="red">A definição da fórmula não está correta, verifique se todas regras foram aplicadas corretamente. Lembre-se que uma fórmula é definida pela seguinte BNF: F :== P | ~ P | P & Q | P | Q | P -> Q | P <-> Q | (P), onde P,Q (em caixa alta) são átomos.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
 
