@@ -326,3 +326,34 @@ def verify_substitution(input_string='', input_formula = '', input_var ='x', inp
   run.on_click(on_button_run_clicked)
 
 
+def verify_valid_conclusion(input_assumptions, input_conclusion, result_value=False):
+  layout = widgets.Layout(width='40%')
+  run = widgets.Button(description="Verificar")
+  output = widgets.Output()
+  wButtons = widgets.HBox([run])
+  cResult = widgets.RadioButtons(
+    options=['Sim', 'Não'],
+    value=None, 
+    description='Resposta:',
+    disabled=False
+)
+  questao = '**Considere as seguintes afirmações:**'
+  i = 1
+  for assumption in input_assumptions:
+    questao += f'\n1. {assumption}'
+    i+=1
+  questao+='\n**Podemos concluir que a afirmação abaixo segue logicamente das afirmações acima?**'
+  questao+=f'\n{i}. {input_conclusion}'
+  display(Markdown(questao))
+  display(widgets.HBox([cResult,wButtons]), output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      if (cResult.value==None):
+        display(Markdown('<font color="red">**Escolha uma das alternativas! Tente novamente!**</font>'))
+      elif(result_value==(cResult.value=='Sim')):
+        display(Markdown('<font color="blue">**Parabéns, você acertou a questão.**</font>'))
+      else:
+        display(Markdown('<font color="red">**Infelizmente, você errou a questão. Tente novamente!**</font>'))
+  run.on_click(on_button_run_clicked)
