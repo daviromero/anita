@@ -408,3 +408,43 @@ def verify_valid_conclusion(input_assumptions, input_conclusion, result_value=Fa
       else:
         display(Markdown('<font color="red">**Unfortunately, you got the question wrong. Try again!**</font>'))
   run.on_click(on_button_run_clicked)
+
+def verify_formula(input_string=''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Check")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Enter your formula:',
+      description='',
+      layout=layout
+      )
+  cParentheses = widgets.Checkbox(value=False, description='Display Formula with Parentheses')
+  cLatex = widgets.Checkbox(value=False, description='Display Formula in Latex')
+  output = widgets.Output()
+  wButtons = widgets.HBox([run, cParentheses, cLatex])
+  
+  display(Markdown(r'**Enter your formula:**'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input.value)
+          if(result!=None):
+              display(Markdown(r'**<font color="blue">Congratulations this is a formula of logic:</font>**'))
+              if(cLatex.value):
+                s = result.toLatex(parentheses=cParentheses.value)
+                display(Markdown(rf'${s}$'))
+              else:
+                display(Markdown(rf'{result.toString(parentheses=cParentheses.value)}'))
+          else:
+            display(Markdown(r'**<font color="red">Formula definition is not correct, check if all rules are applied correctly. Remember that a formula is defined by the following BNF: F :== P | ~ P | Q & Q | P | Q | P -> Q | P <-> Q | (P), where P,Q (in capital letters) are atoms.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+

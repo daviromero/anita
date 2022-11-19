@@ -409,3 +409,43 @@ def verify_valid_conclusion(input_assumptions, input_conclusion, result_value=Fa
       else:
         display(Markdown('<font color="red">**Infelizmente, você errou a questão. Tente novamente!**</font>'))
   run.on_click(on_button_run_clicked)
+
+def verify_formula(input_string=''):
+  layout = widgets.Layout(width='90%')
+  run = widgets.Button(description="Verificar")
+  input = widgets.Text(
+      value=input_string,
+      placeholder='Digite sua fórmula:',
+      description='',
+      layout=layout
+      )
+  cParentheses = widgets.Checkbox(value=False, description='Exibir Fórmula com Parênteses')
+  cLatex = widgets.Checkbox(value=False, description='Exibir Fórmula em Latex')
+  output = widgets.Output()
+  wButtons = widgets.HBox([run, cParentheses, cLatex])
+  
+  display(Markdown(r'**Digite sua fórmula:**'))
+  display(input, wButtons, output)
+
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserFormula.getFormula(input.value)
+          if(result!=None):
+              display(Markdown(r'**<font color="blue">Parabéns essa é uma fórmula da lógica:</font>**'))
+              if(cLatex.value):
+                s = result.toLatex(parentheses=cParentheses.value)
+                display(Markdown(rf'${s}$'))
+              else:
+                display(Markdown(rf'{result.toString(parentheses=cParentheses.value)}'))
+          else:
+            display(Markdown(r'**<font color="red">A definição da fórmula não está correta, verifique se todas regras foram aplicadas corretamente. Lembre-se que uma fórmula é definida pela seguinte BNF: F :== P | ~ P | P & Q | P | Q | P -> Q | P <-> Q | (P), onde P,Q (em caixa alta) são átomos.</font>**'))
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
