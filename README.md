@@ -28,10 +28,22 @@ To facilitate the writing of the proofs, we made the following conventions in AN
 ![](ANITA-EXAMPLE.png)
 
 ## License
-ANITA is available by a [**MIT License**](license.txt).
+ANITA is available by a ![**MIT License**](license.txt).
 
 ## Requirements:
 - You must install the [rply 0.7.8 package](https://pypi.org/project/rply/)
+
+## Install
+
+To install ANITA from the Github, run the following command:
+```bash
+pip install git+https://github.com/daviromero/anita.git
+```
+
+To install ANITA from the PyPi repository, run the following command:
+```bash
+pip install anita
+```
 
 ## ANITA
 You can run ANITA with the command line: 
