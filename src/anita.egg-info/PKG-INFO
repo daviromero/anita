@@ -1,3 +1,16 @@
+Metadata-Version: 2.1
+Name: anita
+Version: 0.1.8
+Summary: ANITA is a proof assistant for teaching analytic tableaux to computer science students. ANITA allows students to write their proofs and automatically checks whether the proofs are correct and, if not, displays any errors found.
+Home-page: https://github.com/daviromero/anita
+Author: Davi Romero de Vasconcelos
+Author-email: daviromero@ufc.br
+License: MIT
+Keywords: Analytic Tableaux,Teaching Logic,Educational Software
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+License-File: license.txt
+
 # Analytic Tableau Proof Assistant (ANITA)
 
 The ANITA is a tool written in Python that can be used as a desktop application, or in a [web platform](https://sistemas.quixada.ufc.br/anita/en/). The main idea is that the students can write their proofs as similar as possible to what is available in the textbooks and to what the students would usually write on paper. ANITA allows the students to automatically check whether a proof in the analytic tableaux is valid. If the proof is not correct, ANITA will display the errors of the proof. So, the students may make mistakes and learn from the errors. The web interface is very easy-to-use and has: 
@@ -28,7 +41,7 @@ To facilitate the writing of the proofs, we made the following conventions in AN
 ![](ANITA-EXAMPLE.png)
 
 ## License
-ANITA is available by a [**MIT License**](./license.txt).
+ANITA is available by a ![**MIT License**](license.txt).
 
 ## Requirements:
 - You must install the [rply 0.7.8 package](https://pypi.org/project/rply/)
@@ -51,7 +64,7 @@ You can run ANITA with the command line:
 python anita_en.py [-i input_file] [-o output_file]
 ```
 ## ANITA in Voila
-You can run ANITA in Jupyter Nootebook or in a [Voilà](https://voila.readthedocs.io/) 
+You can run ANITA in Jupyter Nootebook or in a [VoilÃ ](https://voila.readthedocs.io/) 
 ```bash
 voila anita_en.ipynb
 ```
@@ -89,7 +102,7 @@ We have a portuguese version:
 ```bash
 python anita.anita_pt.py [-i input_file] [-o output_file]
 ```
-- Voilà with
+- VoilÃ  with
 ```bash
 voila anita_pt.ipynb
 ```
@@ -121,3 +134,5 @@ print(check_proof('''1. T A|B		pre
    }
 '''))
 ```
+
+
