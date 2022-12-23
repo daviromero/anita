@@ -1,4 +1,4 @@
-from anita_pt_fo import check_proof
+from anita.anita_pt_fo import check_proof
 
 print(check_proof('''1. T A|B		pre
 2. T A->C		pre

@@ -1,6 +1,6 @@
 # Analytic Tableau Proof Assistant (ANITA)
 
-The ANITA is a tool written in Python that can be used in *desktop*, or in a [web platform](https://sistemas.quixada.ufc.br/anita/en/). The main idea is that the students can write their proofs as similar as possible to what is available in the textbooks and to what the students would usually write on paper. ANITA allows the students to automatically check whether a proof in the analytic tableaux is valid. If the proof is not correct, ANITA will display the errors of the proof. So, the students may make mistakes and learn from the errors. The web interface is very easy-to-use and has: 
+The ANITA is a tool written in Python that can be used as a desktop application, or in a [web platform](https://sistemas.quixada.ufc.br/anita/en/). The main idea is that the students can write their proofs as similar as possible to what is available in the textbooks and to what the students would usually write on paper. ANITA allows the students to automatically check whether a proof in the analytic tableaux is valid. If the proof is not correct, ANITA will display the errors of the proof. So, the students may make mistakes and learn from the errors. The web interface is very easy-to-use and has: 
 - An area for editing the proof in plain text. The students should write a proof in the Fitch-style (see [AT Rules](AT-Rules.pdf)).
 - A message area to display whether the proof is valid, the countermodel, or the errors on the proof.
 - And the following links: 
@@ -28,7 +28,7 @@ To facilitate the writing of the proofs, we made the following conventions in AN
 ![](ANITA-EXAMPLE.png)
 
 ## License
-ANITA is avalible by a [**MIT License**](license.txt).
+ANITA is available by a [**MIT License**](license.txt).
 
 ## Requirements:
 - You must install the [rply 0.7.8 package](https://pypi.org/project/rply/)
@@ -36,7 +36,7 @@ ANITA is avalible by a [**MIT License**](license.txt).
 ## ANITA
 You can run ANITA with the command line: 
 ```bash
-python anita_en.py [-i input file] [-output file]
+python anita_en.py [-i input_file] [-o output_file]
 ```
 ## ANITA in Voila
 You can run ANITA in Jupyter Nootebook or in a [Voilà](https://voila.readthedocs.io/) 
@@ -46,7 +46,7 @@ voila anita_en.ipynb
 ## ANITA in your code
 You can import ANITA in your code (basic usage)
 ```bash
-from anita_en_fo import check_proof
+from anita.anita_en_fo import check_proof
 
 print(check_proof('''1. T A|B		pre
 2. T A->C		pre
@@ -75,7 +75,7 @@ print(check_proof('''1. T A|B		pre
 We have a portuguese version:
 - Run ANITA with
 ```bash
-python anita_pt.py [-i input file] [-output file]
+python anita.anita_pt.py [-i input_file] [-o output_file]
 ```
 - Voilà with
 ```bash
@@ -85,7 +85,7 @@ voila anita_pt.ipynb
 
 - You can import ANITA in your code (basic usage)
 ```bash
-from anita_pt_fo import check_proof
+from anita.anita_pt_fo import check_proof
 
 print(check_proof('''1. T A|B		pre
 2. T A->C		pre
