@@ -1,7 +1,7 @@
 import ipywidgets as widgets
 from IPython.display import display, Markdown
 import traceback
-from anita.anita_pt_fo import ParserAnita, ParserTheorem, ParserFormula
+from anita.anita_en_fo import ParserAnita, ParserTheorem, ParserFormula
 
 def anita(input_string='', height_layout='300px'):
   layout = widgets.Layout(width='90%', height=height_layout)
@@ -63,19 +63,19 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
   run = widgets.Button(description="Check")
   input = widgets.Textarea(
       value=input_proof,
-      placeholder='Digite sua demonstração:',
+      placeholder='Enter you proof:',
       description='',
       layout=layout
       )
   premisses, conclusion = ParserTheorem.getTheorem(input_theorem)
   if conclusion == None:
-    display(Markdown(rf'**<font color="red">{input_theorem} não é um teorema válido!</font>**'))
+    display(Markdown(rf'**<font color="red">Theorem {input_theorem} is not valid.</font>**'))              
     return
-  cLatex = widgets.Checkbox(value=False, description='Exibir Latex')
+  cLatex = widgets.Checkbox(value=False, description='Display Latex')
   output = widgets.Output()
   wButtons = widgets.HBox([run, cLatex])
   
-  display(widgets.HTML(f'<h3>Digite a demonstração de {input_theorem} em Tableau Analítico:</h3>'), 
+  display(widgets.HTML(f'<h3Enter the proof of {input_theorem} in Analytic Tableau:</h3>'), 
           input, wButtons, output)
   
   def on_button_run_clicked(_):
@@ -89,28 +89,28 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
               if(conclusion==result.conclusion and set_premisses==set_premisses_result):
                 msg = []
                 if(result.is_closed):
-                  display(Markdown(rf'**<font color="blue">Parabéns! A demonstraçãoo de {result.theorem} está correta.</font>**'))
+                  display(Markdown(rf'**<font color="blue">Congratulations! The proof of {result.theorem} is valid.</font>**'))
                 else:
                   if result.saturared_branches!=[]:
-                    display(Markdown(rf'**<font color="blue">O teorema {result.theorem} não é válido.</font>**'))              
-                    msg.append("São contra-exemplos:")
+                    display(Markdown(rf'**<font color="blue">Theorem {result.theorem} is not valid.</font>**'))              
+                    msg.append("Countermodels:")
                     for s_v in result.counter_examples:
                       msg.append(s_v)                  
                   else:
-                    display(Markdown(rf'**<font color="red">A demonstração de {result.theorem} não está completa.</font>**'))              
-                    msg.append("Os ramos abaixo não estão saturados:")
+                    display(Markdown(rf'**<font color="red">The proof of {result.theorem} is not complete.</font>**'))              
+                    msg.append("The branches below are not saturated:")
                     for rules in result.open_branches:
-                      msg.append("Ramo:")
+                      msg.append("Branch:")
                       msg.append('<br>'.join([r.toString() for r in reversed(rules)]))
                 if(cLatex.value):
-                  msg.append("Código Latex:")
+                  msg.append("Latex Code:")
                   msg.append("%"+result.latex_theorem)
                   msg.append(result.colored_latex)
                 display(widgets.HTML('<br>'.join(msg)))       
               else:
-                display(Markdown(rf'**<font color="red">Sua demostração de {result.theorem} é válida, mas é diferente da demonstração solicitada {input_theorem}!</font>**'))
+                display(Markdown(rf'**<font color="red">Proof of {result.theorem} is valid, but it is not {input_theorem}!</font>**'))
           else:
-            display(Markdown(rf'**<font color="red">Sua demonstração contém os seguintes erros:</font>**'))
+            display(Markdown(rf'**<font color="red">The proof is not correct:</font>**'))
             for error in result.errors:
                 print(error)
       except ValueError:
