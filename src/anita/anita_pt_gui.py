@@ -3,61 +3,6 @@ from IPython.display import display, Markdown, HTML
 import traceback
 from anita.anita_pt_fo import ParserAnita, ParserTheorem, ParserFormula
 
-def anita(input_string='', height_layout='300px'):
-  layout = widgets.Layout(width='90%', height=height_layout)
-  run = widgets.Button(description="Verificar")
-  input = widgets.Textarea(
-      value=input_string,
-      placeholder='Digite sua demonstração',
-      description='',
-      layout=layout
-      )
-  cLatex = widgets.Checkbox(value=False, description='Exibir Latex')
-  output = widgets.Output()
-  wButtons = widgets.HBox([run, cLatex])
-  
-  display(widgets.HTML('<h3>Digite sua demonstração em Tableau Analítico:</h3>'), 
-          input, wButtons, output)
-
-  def on_button_run_clicked(_):
-    output.clear_output()
-    with output:
-      try:
-          result = ParserAnita.getProof(input.value)
-          if(result.errors==[]):
-            msg = []
-            if(result.is_closed):
-              display(HTML(rf'<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>'))
-            else:
-              if result.saturared_branches!=[]:
-                display(HTML(rf'<font color="blue">O teorema {result.theorem} não é válido.</font>'))              
-                msg.append("São contra-exemplos:")
-                for s_v in result.counter_examples:
-                  msg.append(s_v)                  
-              else:
-                display(HTML(rf'<font color="red">A demonstração de {result.theorem} não está completa.</font>'))              
-                msg.append("Os ramos abaixo não estão saturados:")
-                for rules in result.open_branches:
-                  msg.append("Ramo:")
-                  msg.append('<br>'.join([r.toString() for r in reversed(rules)]))
-            if(cLatex.value):
-              msg.append("Código Latex:")
-              msg.append("%"+result.latex_theorem)
-              msg.append(result.colored_latex)
-            display(widgets.HTML('<br>'.join(msg)))       
-          else:
-            display(HTML(rf'<font color="red">Sua demonstração contém os seguintes erros:</font>'))
-            for error in result.errors:
-                print(error)
-      except ValueError:
-          s = traceback.format_exc()
-          result = (s.split("@@"))[-1]
-          print (f'{result}')
-      else:
-          pass
-  run.on_click(on_button_run_clicked)
-
-
 def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', height_layout='300px'):
   layout = widgets.Layout(width='90%', height=height_layout)
   run = widgets.Button(description="Verificar")
@@ -126,6 +71,70 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
             display(widgets.HTML('<br>'.join(msg)))       
           else:
             display(Markdown(rf'**<font color="red">Sua demonstração contém os seguintes erros:</font>**'))
+            for error in result.errors:
+                print(error)
+      except ValueError:
+          s = traceback.format_exc()
+          result = (s.split("@@"))[-1]
+          print (f'{result}')
+      else:
+          pass
+  run.on_click(on_button_run_clicked)
+
+
+def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_gentzen=False, default_fitch=False):
+  layout = widgets.Layout(width='90%', height=height_layout)
+  run = widgets.Button(description="Verificar")
+  input = widgets.Textarea(
+      value=input_proof,
+      placeholder='Digite sua demonstração:',
+      description='',
+      layout=layout
+      )
+  premisses, conclusion = ParserTheorem.getTheorem(input_theorem)
+  if conclusion == None:
+    display(HTML(rf'<font color="red">{input_theorem} não é um teorema válido!</font>'))
+    return
+  cLatex = widgets.Checkbox(value=False, description='Exibir Latex')
+  output = widgets.Output()
+  wButtons = widgets.HBox([run, cLatex])
+  
+  display(widgets.HTML(f'<h3>Digite a demonstração de {input_theorem} em Tableau Analítico:</h3>'), 
+          input, wButtons, output)
+  
+  def on_button_run_clicked(_):
+    output.clear_output()
+    with output:
+      try:
+          result = ParserAnita.getProof(input.value)
+          if(result.errors==[]):
+              set_premisses = set([p.toString() for p in premisses])
+              set_premisses_result = set([p.toString() for p in result.premisses])
+              if(conclusion==result.conclusion and set_premisses==set_premisses_result):
+                msg = []
+                if(result.is_closed):
+                  display(HTML(rf'<font color="blue">Parabéns! A demonstraçãoo de {result.theorem} está correta.</font>'))
+                else:
+                  if result.saturared_branches!=[]:
+                    display(HTML(rf'<font color="blue">O teorema {result.theorem} não é válido.</font>'))              
+                    msg.append("São contra-exemplos:")
+                    for s_v in result.counter_examples:
+                      msg.append(s_v)                  
+                  else:
+                    display(HTML(rf'<font color="red">A demonstração de {result.theorem} não está completa.</font>'))              
+                    msg.append("Os ramos abaixo não estão saturados:")
+                    for rules in result.open_branches:
+                      msg.append("Ramo:")
+                      msg.append('<br>'.join([r.toString() for r in reversed(rules)]))
+                if(cLatex.value):
+                  msg.append("Código Latex:")
+                  msg.append("%"+result.latex_theorem)
+                  msg.append(result.colored_latex)
+                display(widgets.HTML('<br>'.join(msg)))       
+              else:
+                display(HTML(rf'<font color="red">Sua demostração de {result.theorem} é válida, mas é diferente da demonstração solicitada {input_theorem}!</font>'))
+          else:
+            display(HTML(rf'<font color="red">Sua demonstração contém os seguintes erros:</font>'))
             for error in result.errors:
                 print(error)
       except ValueError:
