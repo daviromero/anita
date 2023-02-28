@@ -37,7 +37,7 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
       input.value += '\n# Assim, devemos demonstrar que o raciocínio abaixo é válido:'
       input.value += '\n# ...'
   else:  
-    display(Markdown('## Digite sua demonstração em Tableau Analítico:'))
+    display(Markdown('### Digite sua demonstração em Tableau Analítico:'))
   display(input, wButtons, output)
 
   def on_button_run_clicked(_):
