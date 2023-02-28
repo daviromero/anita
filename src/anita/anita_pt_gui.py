@@ -26,18 +26,15 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
     display(Markdown(r'<b>Considere a afirmação abaixo segue logicamente das afirmações acima:'))
     q_conclusion =f'\n{i}. {input_text_conclusion}'
     display(Markdown(q_conclusion))
-    display(Markdown('## Represente as afirmações acima em lógica e digite sua demonstração em Tableau Analítico:'))
-    if input_proof!='':
-      input.value = '''# A linguagem não lógica é:
-                    # - ...
-                    # - ...
-                    # As afirmações são representar pelas seguintes fórmulas:'''
+    display(Markdown('### Represente as afirmações acima em lógica e digite sua demonstração em Tableau Analítico:'))
+    if input_proof=='':
+      input.value = '# A linguagem não-lógica é:\n# - ...\n# - ...\n# As afirmações são representar pelas seguintes fórmulas:'
       i = 1
       for assumption in input_text_assumptions:
-        input.value += f'\n# 1. {assumption}'
+        input.value += f'\n# {i}. {assumption}'
         i+=1
-      input.value += f'\n#{i}. {input_text_conclusion}'
-      input.value += '\n# Assim, devemos verificar se o raciocínio abaixo é válido:'
+      input.value += f'\n# {i}. {input_text_conclusion}'
+      input.value += '\n# Assim, devemos demonstrar que o raciocínio abaixo é válido:'
       input.value += '\n# ...'
   else:  
     display(Markdown('## Digite sua demonstração em Tableau Analítico:'))
