@@ -28,12 +28,12 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
     display(Markdown(q_conclusion))
     display(Markdown('### Represente as afirmações acima em lógica e digite sua demonstração em Tableau Analítico:'))
     if input_proof=='':
-      input.value = '# A linguagem não-lógica é:\n# - ...\n# - ...\n# As afirmações são representar pelas seguintes fórmulas:'
+      input.value = '# A linguagem não-lógica é:\n# - ...\n# - ...\n# - ...\n# As afirmações são representar pelas seguintes fórmulas:'
       i = 1
       for assumption in input_text_assumptions:
-        input.value += f'\n# {i}. {assumption}'
+        input.value += f'\n# {i}. ... para "{assumption}"'
         i+=1
-      input.value += f'\n# {i}. {input_text_conclusion}'
+      input.value += f'\n# {i}. ... para "{input_text_conclusion}"'
       input.value += '\n# Assim, devemos demonstrar que o raciocínio abaixo é válido:'
       input.value += '\n# ...'
   else:  
