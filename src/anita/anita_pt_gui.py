@@ -3,11 +3,11 @@ from IPython.display import display, Markdown, HTML
 import traceback
 from anita.anita_pt_fo import ParserAnita, ParserTheorem, ParserFormula
 
-def anita(input_string='', height_layout='300px'):
+def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', height_layout='300px'):
   layout = widgets.Layout(width='90%', height=height_layout)
   run = widgets.Button(description="Verificar")
   input = widgets.Textarea(
-      value=input_string,
+      value=input_proof,
       placeholder='Digite sua demonstração',
       description='',
       layout=layout
@@ -15,9 +15,31 @@ def anita(input_string='', height_layout='300px'):
   cLatex = widgets.Checkbox(value=False, description='Exibir Latex')
   output = widgets.Output()
   wButtons = widgets.HBox([run, cLatex])
-  
-  display(widgets.HTML('<h3>Digite sua demonstração em Tableau Analítico:</h3>'), 
-          input, wButtons, output)
+  if input_text_conclusion!='':
+    display(Markdown( r'<b>Considere as seguintes afirmações:</b>'))
+    q_assumptions =''
+    i = 1
+    for assumption in input_text_assumptions:
+      q_assumptions += f'\n1. {assumption}'
+      i+=1
+    display(Markdown(q_assumptions))
+    display(Markdown(r'<b>Considere a afirmação abaixo segue logicamente das afirmações acima:'))
+    q_conclusion =f'\n{i}. {input_text_conclusion}'
+    display(Markdown(q_conclusion))
+    display(Markdown('### Represente as afirmações acima em lógica e digite sua demonstração em Tableau Analítico:'))
+    if input_proof=='':
+      # input.value = '# Considere a seguinte linguagem não lógica:\n# - ...\n# - ...\n# - ...\n# Representamos as afirmações através das seguintes fórmulas:'
+      input.value = '# Representamos as afirmações através das seguintes fórmulas:'
+      i = 1
+      for assumption in input_text_assumptions:
+        input.value += f'\n# {i}. ... para "{assumption}"'
+        i+=1
+      input.value += f'\n# {i}. ... para "{input_text_conclusion}"'
+      input.value += '\n# Assim, devemos demonstrar que o raciocínio abaixo é válido:'
+      input.value += '\n# ...'
+  else:  
+    display(Markdown('### Digite sua demonstração em Tableau Analítico:'))
+  display(input, wButtons, output)
 
   def on_button_run_clicked(_):
     output.clear_output()
@@ -27,15 +49,15 @@ def anita(input_string='', height_layout='300px'):
           if(result.errors==[]):
             msg = []
             if(result.is_closed):
-              display(HTML(rf'<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>'))
+              display(Markdown(rf'**<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>**'))
             else:
               if result.saturared_branches!=[]:
-                display(HTML(rf'<font color="blue">O teorema {result.theorem} não é válido.</font>'))              
+                display(Markdown(rf'**<font color="blue">O teorema {result.theorem} não é válido.</font>**'))              
                 msg.append("São contra-exemplos:")
                 for s_v in result.counter_examples:
                   msg.append(s_v)                  
               else:
-                display(HTML(rf'<font color="red">A demonstração de {result.theorem} não está completa.</font>'))              
+                display(Markdown(rf'**<font color="red">A demonstração de {result.theorem} não está completa.</font>**'))              
                 msg.append("Os ramos abaixo não estão saturados:")
                 for rules in result.open_branches:
                   msg.append("Ramo:")
@@ -46,7 +68,7 @@ def anita(input_string='', height_layout='300px'):
               msg.append(result.colored_latex)
             display(widgets.HTML('<br>'.join(msg)))       
           else:
-            display(HTML(rf'<font color="red">Sua demonstração contém os seguintes erros:</font>'))
+            display(Markdown(rf'**<font color="red">Sua demonstração contém os seguintes erros:</font>**'))
             for error in result.errors:
                 print(error)
       except ValueError:
