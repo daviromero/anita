@@ -32,6 +32,7 @@ ANITA is available by [**MIT License**](https://github.com/daviromero/anita/blob
 
 ## Requirements:
 - You must install [rply 0.7.8 package](https://pypi.org/project/rply/)
+- ipywidgets
 
 ## Install
 
