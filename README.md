@@ -51,8 +51,15 @@ You can run ANITA with the command line:
 ```bash
 python anita_en.py [-i input_file] [-o output_file]
 ```
+## ANITA in Jupyter Nootebook
+You can run ANITA in Jupyter Nootebook: 
+```bash
+from anita.anita_en_gui import anita
+anita()
+
+```
 ## ANITA in Voila
-You can run ANITA in Jupyter Nootebook or in a [Voilà](https://voila.readthedocs.io/) 
+You can run ANITA in a [Voilà](https://voila.readthedocs.io/) 
 ```bash
 voila anita_en.ipynb
 ```
@@ -89,6 +96,11 @@ We have a portuguese version:
 - Run ANITA with
 ```bash
 python anita.anita_pt.py [-i input_file] [-o output_file]
+```
+- Jupyter Nootebook with
+```bash
+from anita.anita_pt_gui import anita
+anita()
 ```
 - Voilà with
 ```bash
