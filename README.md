@@ -92,7 +92,8 @@ print(check_proof('''1. T A|B		pre
 ```
 
 ## A Portuguese Version
-We have a portuguese version:
+We have a portuguese version. In the portuguese ANITA syntax, use `conclusao` instead of `conclusion`.
+
 - Run ANITA with
 ```bash
 python anita.anita_pt.py [-i input_file] [-o output_file]
@@ -106,8 +107,6 @@ anita()
 ```bash
 voila anita_pt.ipynb
 ```
-- In ANITA syntax, use `conclusao`instead of `conclusion`.
-
 - You can import ANITA in your code (basic usage)
 ```bash
 from anita.anita_pt_fo import check_proof
