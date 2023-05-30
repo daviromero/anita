@@ -2425,7 +2425,7 @@ class ParserAnita():
             erro += "^, A regra deve ser do tipo alpha."
         elif type_error == constants.WRONG_TRUE_VALUE:
             if rule.token_true_value.gettokentype() == 'FALSE':  
-              erro += "^, O valor-verdade deveria ser V para esta regra."
+              erro += "^, O valor-verdade deveria ser T para esta regra."
             else:
               erro += "^, O valor-verdade deveria ser F para esta regra."
 
