@@ -1793,6 +1793,10 @@ class ParserAnita():
                 token_symbol_rule = Token('NEG_FALSE', '~F')
               negation = NegationRule(token_line, token_true_value, token_formula, token_symbol_rule, token_reference1, show_token_symbol=False)
               self.symbol_table.insert(negation)
+              if (token_true_value.gettokentype() == 'TRUE' and token_symbol_rule.gettokentype() == 'NEG_TRUE') or (token_true_value.gettokentype() == 'FALSE' and token_symbol_rule.gettokentype() == 'NEG_FALSE') :  
+                self.has_error = True
+                deduction_result.add_error(self.get_error(constants.WRONG_TRUE_VALUE, token_true_value, negation)) 
+
             elif(isinstance(formula1, UniversalFormula) and true_value_formula1=='T'):
               token_symbol_rule = Token('ALL_TRUE', 'AT')
               f = ForAllTrueRule(token_line, token_true_value, token_formula, token_symbol_rule, token_reference1, show_token_symbol=False)
