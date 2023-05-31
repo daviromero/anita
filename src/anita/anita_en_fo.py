@@ -1795,7 +1795,7 @@ class ParserAnita():
               self.symbol_table.insert(negation)
               if (token_true_value.gettokentype() == 'TRUE' and token_symbol_rule.gettokentype() == 'NEG_TRUE') or (token_true_value.gettokentype() == 'FALSE' and token_symbol_rule.gettokentype() == 'NEG_FALSE') :  
                 self.has_error = True
-                deduction_result.add_error(self.get_error(constants.WRONG_TRUE_VALUE, token_true_value, negation)) 
+                deduction_result.add_error(self.get_error(constants.WRONG_TRUE_VALUE, token_true_value, negation))              
 
             elif(isinstance(formula1, UniversalFormula) and true_value_formula1=='T'):
               token_symbol_rule = Token('ALL_TRUE', 'AT')
@@ -2335,9 +2335,9 @@ class ParserAnita():
         elif type_error == constants.INVALID_NEGATION:
             erro += "^, None of the formulas referenced by the lines contradict the other formula."
         elif type_error == constants.INVALID_LEFT_IMPLICATION:
-            erro += "^, Formula {} (conclusion of the rule) must be the antecedent of the implication of the referenced formula with truth-value T.".format(rule.formula.toString())
+            erro += "^, Formula {} (conclusion of the rule) must be the antecedent of the implication of the referenced formula with truth-value F.".format(rule.formula.toString())
         elif type_error == constants.INVALID_RIGHT_IMPLICATION:
-            erro += "^, Formula {} (conclusion of the rule) must be the consequent of the implication of the referenced formula with truth-value F.".format(rule.formula.toString())
+            erro += "^, Formula {} (conclusion of the rule) must be the consequent of the implication of the referenced formula with truth-value T.".format(rule.formula.toString())
         elif type_error == constants.INVALID_LEFT_RIGHT_IMPLICATION:
             erro += "^, Formula {} (conclusion of the rule) must be the antecedent or consequent of the implication of the referenced formula.".format(rule.formula.toString())
         elif type_error == constants.INVALID_LEFT_CONJUNCTION:

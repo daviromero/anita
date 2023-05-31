@@ -2350,9 +2350,9 @@ class ParserAnita():
         elif type_error == constants.INVALID_NEGATION:
             erro += "^, Nenhuma das fórmulas referencias pelas linhas contradiz a outra fórmula."
         elif type_error == constants.INVALID_LEFT_IMPLICATION:
-            erro += "^, A fórmula {} (conclusão da regra) deve ser o antecedente da implicação da fórmula referenciada com valor-verdade T.".format(rule.formula.toString())
+            erro += "^, A fórmula {} (conclusão da regra) deve ser o antecedente da implicação da fórmula referenciada com valor-verdade F.".format(rule.formula.toString())
         elif type_error == constants.INVALID_RIGHT_IMPLICATION:
-            erro += "^, A fórmula {} (conclusão da regra) deve ser o consequente da implicação da fórmula referenciada com valor-verdade F.".format(rule.formula.toString())
+            erro += "^, A fórmula {} (conclusão da regra) deve ser o consequente da implicação da fórmula referenciada com valor-verdade T.".format(rule.formula.toString())
         elif type_error == constants.INVALID_LEFT_RIGHT_IMPLICATION:
             erro += "^, A fórmula {} (conclusão da regra) deve ser o antecedente ou o consequente da implicação da fórmula referenciada.".format(rule.formula.toString())
         elif type_error == constants.INVALID_LEFT_CONJUNCTION:
