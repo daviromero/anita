@@ -68,7 +68,7 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
               msg.append(result.colored_latex)
             display(widgets.HTML('<br>'.join(msg)))       
           else:
-            display(HTML(rf'**<font color="red">Sua demonstração contém os seguintes erros:</font>**'))
+            display(HTML(rf'<font color="red">Sua demonstração contém os seguintes erros:</font>'))
             for error in result.errors:
                 print(error)
       except ValueError:
