@@ -2501,7 +2501,7 @@ def check_proof(input_proof, latex=True):
       else:
         r += "Os seguintes erros foram encontrados:\n\n"
         for error in result.errors:
-          r += str(error)
+          r += '\n'+str(error)
       return r
   except ValueError:
       s = traceback.format_exc()

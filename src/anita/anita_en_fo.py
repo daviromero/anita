@@ -2483,7 +2483,7 @@ def check_proof(input_proof, latex=True):
       else:
         r += "The following errors were found:\n\n"
         for error in result.errors:
-          r += str(error)
+          r += '\n'+str(error)
       return r
   except ValueError:
       s = traceback.format_exc()
