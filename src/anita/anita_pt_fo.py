@@ -2499,7 +2499,7 @@ def check_proof(input_proof, latex=True):
                   r += "\nLatex:\n"+str(result.latex)
                   r += "\nLatex com cor:\n"+str(result.colored_latex)
       else:
-        r += "Os seguintes erros foram encontrados:\n\n"
+        r += "Os seguintes erros foram encontrados:\n"
         for error in result.errors:
           r += '\n'+str(error)
       return r

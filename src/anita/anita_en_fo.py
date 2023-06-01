@@ -2481,7 +2481,7 @@ def check_proof(input_proof, latex=True):
                   r += "\nLatex:\n"+str(result.latex)
                   r += "\nColored Latex:\n"+str(result.colored_latex)
       else:
-        r += "The following errors were found:\n\n"
+        r += "The following errors were found:\n"
         for error in result.errors:
           r += '\n'+str(error)
       return r
