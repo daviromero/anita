@@ -49,15 +49,15 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
           if(result.errors==[]):
             msg = []
             if(result.is_closed):
-              display(HTML(rf'**<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>**'))
+              display(HTML(rf'<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>'))
             else:
               if result.saturared_branches!=[]:
-                display(HTML(rf'**<font color="blue">O teorema {result.theorem} não é válido.</font>**'))              
+                display(HTML(rf'<font color="blue">O teorema {result.theorem} não é válido.</font>')) 
                 msg.append("São contra-exemplos:")
                 for s_v in result.counter_examples:
                   msg.append(s_v)                  
               else:
-                display(HTML(rf'**<font color="red">A demonstração de {result.theorem} não está completa.</font>**'))              
+                display(HTML(rf'<font color="red">A demonstração de {result.theorem} não está completa.</font>')) 
                 msg.append("Os ramos abaixo não estão saturados:")
                 for rules in result.open_branches:
                   msg.append("Ramo:")
