@@ -49,15 +49,15 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
           if(result.errors==[]):
             msg = []
             if(result.is_closed):
-              display(Markdown(rf'**<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>**'))
+              display(HTML(rf'**<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>**'))
             else:
               if result.saturared_branches!=[]:
-                display(Markdown(rf'**<font color="blue">O teorema {result.theorem} não é válido.</font>**'))              
+                display(HTML(rf'**<font color="blue">O teorema {result.theorem} não é válido.</font>**'))              
                 msg.append("São contra-exemplos:")
                 for s_v in result.counter_examples:
                   msg.append(s_v)                  
               else:
-                display(Markdown(rf'**<font color="red">A demonstração de {result.theorem} não está completa.</font>**'))              
+                display(HTML(rf'**<font color="red">A demonstração de {result.theorem} não está completa.</font>**'))              
                 msg.append("Os ramos abaixo não estão saturados:")
                 for rules in result.open_branches:
                   msg.append("Ramo:")
@@ -68,7 +68,7 @@ def anita(input_proof='', input_text_assumptions=[], input_text_conclusion='', h
               msg.append(result.colored_latex)
             display(widgets.HTML('<br>'.join(msg)))       
           else:
-            display(Markdown(rf'**<font color="red">Sua demonstração contém os seguintes erros:</font>**'))
+            display(HTML(rf'**<font color="red">Sua demonstração contém os seguintes erros:</font>**'))
             for error in result.errors:
                 print(error)
       except ValueError:
@@ -111,7 +111,7 @@ def anita_theorem(input_theorem, input_proof='', height_layout='300px',default_g
               if(conclusion==result.conclusion and set_premisses==set_premisses_result):
                 msg = []
                 if(result.is_closed):
-                  display(HTML(rf'<font color="blue">Parabéns! A demonstraçãoo de {result.theorem} está correta.</font>'))
+                  display(HTML(rf'<font color="blue">Parabéns! A demonstração de {result.theorem} está correta.</font>'))
                 else:
                   if result.saturared_branches!=[]:
                     display(HTML(rf'<font color="blue">O teorema {result.theorem} não é válido.</font>'))              
