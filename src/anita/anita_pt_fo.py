@@ -75,7 +75,7 @@ class BinaryFormula():
       return self.left.free_variables().union(self.right.free_variables())
 
     def is_substitutable(self, x, y):
-      return self.left.substitutable(x,y) and self.right.substitutable(x,y) 
+      return self.left.is_substitutable(x,y) and self.right.is_substitutable(x,y) 
 
     def substitution(self, var_x, a):
       return BinaryFormula(self.key, self.left.substitution(var_x, a), self.right.substitution(var_x, a))
@@ -149,7 +149,7 @@ class NegationFormula():
       return self.formula.free_variables()
 
     def is_substitutable(self, x, y):
-      return self.formula.substitutable(x,y)
+      return self.formula.is_substitutable(x,y)
 
     def substitution(self, var_x, a):
       return NegationFormula(self.formula.substitution(var_x, a))
