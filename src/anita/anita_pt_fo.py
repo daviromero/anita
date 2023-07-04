@@ -1234,7 +1234,6 @@ class NegationRule(BasicRule):
         return
 
       # If the formula is not a negation formula or the true value is not different
-      print(formula1.toString(), NegationFormula(self.formula).toString(),formula1 != NegationFormula(self.formula))
       if(formula1 != NegationFormula(self.formula)):
           parser.has_error = True
           deduction_result.add_error(parser.get_error(constants.INVALID_RESULT, self.token_reference1, self))
