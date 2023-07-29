@@ -2463,7 +2463,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
 
         if(result.is_closed):
           if(conclusion==None or (conclusion==result.conclusion and set_premisses==set_premisses_result)):
-            r += "The proof is valid.."
+            r += "The proof is valid."
             if display_theorem:
               r += "\n"+s_theorem
           else:
@@ -2498,7 +2498,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
                   r += result.theorem
                 r += "\nThe branches below are not saturated:"
                 for rules in result.open_branches:
-                  r += "\nBranch:\n"
+                  r += "\nBranch:\n  "
                   r += '\n  '.join([r.toString() for r in reversed(rules)])
                 if display_latex: 
                   r += "\nLatex:\n"+str(result.latex)

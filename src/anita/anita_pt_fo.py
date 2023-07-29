@@ -2518,7 +2518,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
                   r += result.theorem
                 r += "\nOs ramos abaixo não estão saturados:"
                 for rules in result.open_branches:
-                  r += "\nRamo:\n"
+                  r += "\nRamo:\n  "
                   r += '\n  '.join([r.toString() for r in reversed(rules)])
                 if display_latex: 
                   r += "\nLatex:\n"+str(result.latex)
