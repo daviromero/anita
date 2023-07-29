@@ -2482,7 +2482,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
           set_premisses = set([p.toString() for p in premisses])
 
         if(result.is_closed):
-          if(conclusion==result.conclusion and set_premisses==set_premisses_result):
+          if(conclusion == None or (conclusion==result.conclusion and set_premisses==set_premisses_result)):
             r += "A demonstração está correta."
             if display_theorem:
               r += "\n"+s_theorem
