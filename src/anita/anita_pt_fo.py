@@ -2471,6 +2471,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
       r = ''
       if(result.errors==[]):
         set_premisses = set()
+        conclusion == None
         s_theorem = ParserAnita.toString(result.premisses, result.conclusion)
         set_premisses_result = set([p.toString() for p in result.premisses])
 
