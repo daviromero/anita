@@ -28,4 +28,4 @@ def app(fileName, input_theorem, input_lang):
     else:
         return "Você deve escolher pt para Português (default) ou en para Inglês."
     
-print(app(fileName,input_theorem))
+print(app(fileName,input_theorem,input_lang))
