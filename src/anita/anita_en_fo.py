@@ -2474,7 +2474,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
             r += "\nColored Latex:\n"+str(result.colored_latex)
         else:
             if result.saturared_branches != []:
-              if(conclusion==result.conclusion and set_premisses==set_premisses_result):
+              if(conclusion==None or (conclusion==result.conclusion and set_premisses==set_premisses_result)):
                 r += "The theorem is not valid."
                 if display_theorem:
                   r += "\n"+result.theorem 
