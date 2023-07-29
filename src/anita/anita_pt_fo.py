@@ -2463,41 +2463,63 @@ class ParserAnita():
         return ", ".join(f.toLatex(parentheses=parentheses) for f in premisses) +' \\vdash '+conclusion.toLatex(parentheses=parentheses)
 
 
-def check_proof(input_proof, latex=True):
+
+
+def check_proof(input_proof, input_theorem=None, display_theorem=True, display_countermodel=True, display_latex=True):
   try:
       result = ParserAnita.getProof(input_proof)
       r = ''
       if(result.errors==[]):
+        set_premisses = set()
+        s_theorem = ParserAnita.toString(result.premisses, result.conclusion)
+        set_premisses_result = set([p.toString() for p in result.premisses])
+
+        if input_theorem!=None: 
+          premisses, conclusion = ParserTheorem.getTheorem(input_theorem)
+          if conclusion == None:
+            return f'{input_theorem} não é um teorema válido!'
+          set_premisses = set([p.toString() for p in premisses])
+
         if(result.is_closed):
-            r += "A demonstração abaixo está correta.\n"
-            r += result.theorem
-            if latex: 
-              r += "\nLatex:\n"+str(result.latex)
-              r += "\nLatex com cor:\n"+str(result.colored_latex)
+          if(conclusion==result.conclusion and set_premisses==set_premisses_result):
+            r += "A demonstração está correta."
+            if display_theorem:
+              r += "\n"+s_theorem
+          else:
+            r += f"Sua demostração de {s_theorem} é válida, mas é diferente da demonstração solicitada {input_theorem}"                   
+
+          if display_latex: 
+            r += "\nLatex:\n"+str(result.latex)
+            r += "\nLatex com cor:\n"+str(result.colored_latex)
         else:
             if result.saturared_branches != []:
-              r += "O Teorema abaixo não é válido.\n"
-              r += result.theorem 
-              r += "\nSão contra-exemplos:"
-              for s_v in result.counter_examples:
-                  r += '\n  '+s_v
-              r += "\n"+str(result.latex)
-              if latex: 
-                r += "\nLatex:\nO Teorema ${}$ não é válido.\n".format(result.latex_theorem)
+              if(conclusion==result.conclusion and set_premisses==set_premisses_result):
+                r += "O Teorema não é válido."
+                if display_theorem:
+                  r += "\n"+result.theorem 
+              if display_countermodel:
                 r += "\nSão contra-exemplos:"
-                r += "\n\\begin{itemize}"
                 for s_v in result.counter_examples:
-                    r += '\n  \item $'+s_v+'$'
-                r += "\n\end{itemize}"
+                    r += '\n  '+s_v
+#                r += "\n"+str(result.latex)
+              if display_latex: 
+                r += "\nLatex:\nO Teorema ${}$ não é válido.\n".format(result.latex_theorem)
+                if display_countermodel:
+                  r += "\nSão contra-exemplos:"
+                  r += "\n\\begin{itemize}"
+                  for s_v in result.counter_examples:
+                      r += '\n  \item $'+s_v+'$'
+                  r += "\n\end{itemize}"
                 r += "\n"+str(result.colored_latex)
             else: 
-                r += "\nA demonstração do teorema abaixo não está completa.\n"
-                r += result.theorem
+                r += "\nA demonstração do teorema não está completa.\n"
+                if display_theorem:
+                  r += result.theorem
                 r += "\nOs ramos abaixo não estão saturados:"
                 for rules in result.open_branches:
                   r += "\nRamo:\n"
                   r += '\n  '.join([r.toString() for r in reversed(rules)])
-                if latex: 
+                if display_latex: 
                   r += "\nLatex:\n"+str(result.latex)
                   r += "\nLatex com cor:\n"+str(result.colored_latex)
       else:
