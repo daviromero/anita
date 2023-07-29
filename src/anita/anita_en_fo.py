@@ -2451,6 +2451,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
       r = ''
       if(result.errors==[]):
         set_premisses = set()
+        conclusion = None
         s_theorem = ParserAnita.toString(result.premisses, result.conclusion)
         set_premisses_result = set([p.toString() for p in result.premisses])
 
@@ -2461,7 +2462,7 @@ def check_proof(input_proof, input_theorem=None, display_theorem=True, display_c
           set_premisses = set([p.toString() for p in premisses])
 
         if(result.is_closed):
-          if(conclusion==result.conclusion and set_premisses==set_premisses_result):
+          if(conclusion==None or (conclusion==result.conclusion and set_premisses==set_premisses_result)):
             r += "The proof is valid.."
             if display_theorem:
               r += "\n"+s_theorem
