@@ -25,7 +25,7 @@ To facilitate the writing of the proofs, we made the following conventions in AN
 | LaTeX  |  $\backslash\textrm{lnot}$ | $\backslash\textrm{land}$ | $\backslash\textrm{lor}$ | $\backslash\textrm{rightarrow}$ | $\backslash\textrm{forall x}$ | $\backslash\textrm{exists x}$ | $\backslash\textrm{bot}$ | $[.~]$ | $\backslash\textrm{vdash}$ |
 | ANITA |  ~  | \& | $\mid$ | -> | Ax | Ex | @  | { } | \|- |
 
-![](ANITA-EXAMPLE.png)
+![](https://raw.githubusercontent.com/daviromero/anita/main/ANITA-EXAMPLE.png)
 
 ## License
 ANITA is available by [**MIT License**](https://github.com/daviromero/anita/blob/main/license.txt).
