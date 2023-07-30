@@ -49,7 +49,7 @@ pip install anita
 ## ANITA
 You can run ANITA with the command line: 
 ```bash
-python anita_en.py [-i input_file] [-o output_file]
+python -m anita -l "en" -i [input_file] 
 ```
 ## ANITA in Jupyter Nootebook
 You can run ANITA in Jupyter Nootebook: 
@@ -96,7 +96,7 @@ We have a portuguese version. In the portuguese ANITA syntax, use `conclusao` in
 
 - Run ANITA with
 ```bash
-python anita.anita_pt.py [-i input_file] [-o output_file]
+python -m anita -i [input_file] 
 ```
 - Jupyter Nootebook with
 ```bash
