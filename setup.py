@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='anita',
-    version='0.1.11',
+    version='0.1.12',
     license='MIT',
     author="Davi Romero de Vasconcelos",
     author_email='daviromero@ufc.br',
@@ -22,6 +22,6 @@ setup(
         'rply',
         'ipywidgets',
       ],
-    entry_points={'console_scripts': ['nadia=nadia.__main__:main', ], },    
+    entry_points={'console_scripts': ['anita=anita.__main__:main', ], },    
 
 )
