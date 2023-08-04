@@ -1,7 +1,7 @@
 # Analytic Tableau Proof Assistant (ANITA)
 
 The ANITA is a tool written in Python that can be used as a desktop application, or in a [web platform](https://sistemas.quixada.ufc.br/anita/en/). There is a [Jupyter Notebook](https://colab.research.google.com/github/daviromero/logic4py/blob/main/src/book/Cap%C3%ADtulo%2013%20-%20Tableau%20Anal%C3%ADtico%20da%20L%C3%B3gica%20de%20Primeira-Ordem.ipynb) (in Portuguese) that presents the Analytic Tableaux and ANITA concepts. The main idea is that the students can write their proofs as similar as possible to what is available in the textbooks and to what the students would usually write on paper. ANITA allows the students to automatically check whether a proof in the analytic tableaux is valid. If the proof is not correct, ANITA will display the errors of the proof. So, the students may make mistakes and learn from the errors. The web interface is very easy-to-use and has: 
-- An area for editing the proof in plain text. The students should write a proof in Fitch-style (see [AT Rules](https://github.com/daviromero/anita/blob/main/AT-Rules.pdf)).
+- An area for editing the proof in plain text. The students should write a proof in Fitch-style (see [AT Rules](https://raw.githubusercontent.com/daviromero/anita/main/AT-Rules.pdf)).
 - A message area to display whether the proof is valid, the countermodel, or the errors on the proof.
 - And the following links: 
   - Check, to check the correctness of the proof; 
@@ -28,7 +28,7 @@ To facilitate the writing of the proofs, we made the following conventions in AN
 ![](https://raw.githubusercontent.com/daviromero/anita/main/ANITA-EXAMPLE.png)
 
 ## License
-ANITA is available by [**MIT License**](https://github.com/daviromero/anita/blob/main/license.txt).
+ANITA is available by [**MIT License**](https://raw.githubusercontent.com/daviromero/anita/main/license.txt).
 
 ## Requirements:
 - You must install [rply 0.7.8 package](https://pypi.org/project/rply/)
@@ -49,7 +49,7 @@ pip install anita
 ## ANITA
 You can run ANITA with the command line: 
 ```bash
-python -m anita -l "en" -i [input_file] 
+anita -l "en" -i [input_file] 
 ```
 ## ANITA in Jupyter Nootebook
 You can run ANITA in Jupyter Nootebook: 
@@ -96,7 +96,7 @@ We have a portuguese version. In the portuguese ANITA syntax, use `conclusao` in
 
 - Run ANITA with
 ```bash
-python -m anita -i [input_file] 
+anita -i [input_file] 
 ```
 - Jupyter Nootebook with
 ```bash
